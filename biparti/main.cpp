@@ -38,8 +38,6 @@ bool biparti()
 	  groupe=!groupe;
 	}
 
-      //cout << "les new id dans tab " << tab[g.id(g.u(e))] << " -> " << tab[g.id(g.v(e))] << endl;
-
       if(tab[g.v(e)]==tab[g.u(e)] && tab[g.v(e)] != 2)
 	{
 	  cout << "le graph n'est pas biparti" << endl;
