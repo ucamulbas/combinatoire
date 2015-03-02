@@ -56,30 +56,33 @@ int main(void)
   for(int i = 0 ; i < tab.size() ; i++)
     {
       noeudActuel = tab[i];
-      couleur[noeudActuel]=couleurActuel;
-      if(i!=tab.size()-1)
+      if(couleur[noeudActuel]==-1)
 	{
-	  for(int j = i + 1 ; j < tab.size() ; j++)
+	  couleur[noeudActuel]=couleurActuel;
+	  if(i!=tab.size()-1)
 	    {
-	      adj=0;
-	      if(couleur[tab[j]]==-1)
+	      for(int j = i + 1 ; j < tab.size() ; j++)
 		{
-		  for(ListGraph::IncEdgeIt it(g,tab[j]) ; it != INVALID ; ++it)
+		  adj=0;
+		  if(couleur[tab[j]]==-1)
 		    {
-		      if((g.id(g.u(it)) == g.id(noeudActuel)) || (g.id(g.v(it)) == g.id(noeudActuel)))
+		      for(ListGraph::IncEdgeIt it(g,tab[j]) ; it != INVALID ; ++it)
 			{
-			  adj=1;
-			  break;
+			  if((g.id(g.u(it)) == g.id(noeudActuel)) || (g.id(g.v(it)) == g.id(noeudActuel)))
+			    {
+			      adj=1;
+			      break;
+			    }
 			}
-		    }
-		  if(!adj)
-		    {
-		      couleur[tab[j]]=couleurActuel;
+		      if(!adj)
+			{
+			  couleur[tab[j]]=couleurActuel;
+			}
 		    }
 		}
 	    }
+	  couleurActuel++;
 	}
-      couleurActuel++;
     }
 
   cout << "il faut " << couleurActuel-1 << " couleur pour ce graph " << endl;
