@@ -15,11 +15,11 @@ int main(void)
   ListGraph::NodeMap<int> degre(g);
   vector<ListGraph::Node> tab;
   int deg, i, size, couleurActuel = 1, adj;
-  fstream fimport("mongraphe.lgf", fstream::in);
+   fstream fimport("mongraphe.lgf", fstream::in);
   graphReader(g, fimport)
     .nodeMap("couleur", couleur)
     .run();
-  fimport.close();
+    fimport.close();
 
   /*
     Pour chaque noeud, je compte son nombre de voisin et
@@ -44,7 +44,7 @@ int main(void)
 		{
 		  tab.push_back(tab[size-1]);
 		  for(int j = size ; j > i ; j--)
-		      tab[j]=tab[j-1];
+		    tab[j]=tab[j-1];
 		  tab[i]=nit;
 		}
 	    }
@@ -52,12 +52,12 @@ int main(void)
 	    tab.push_back(nit);
 	}
     }
-
+  
   for(int i = 0 ; i < tab.size() ; i++)
     {
       noeudActuel = tab[i];
       if(couleur[noeudActuel]==-1)
-	{
+       	{
 	  couleur[noeudActuel]=couleurActuel;
 	  if(i!=tab.size()-1)
 	    {
@@ -73,6 +73,17 @@ int main(void)
 			      adj=1;
 			      break;
 			    }
+			  else
+			    {
+			      for(ListGraph::IncEdgeIt it(g,tab[j]) ; it != INVALID ; ++it)
+				{
+				  if(couleur[g.target(it)]==couleurActuel)
+				    {
+				      adj=1;
+				      break;
+				    }
+				}
+			    }
 			}
 		      if(!adj)
 			{
@@ -82,7 +93,7 @@ int main(void)
 		}
 	    }
 	  couleurActuel++;
-	}
+	 }
     }
 
   cout << "il faut " << couleurActuel-1 << " couleur pour ce graph " << endl;
