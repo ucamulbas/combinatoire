@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <stack>
 #include <lemon/list_graph.h>
-#include <lemon/lgf_writer.h>
 #include <lemon/lgf_reader.h>
 
 using namespace lemon;
@@ -9,10 +9,11 @@ using namespace std;
 
 bool biparti()
 {
-
+  stack<ListGraph::Node> pile;
   ListGraph g;
   ListGraph::NodeMap<int> tab(g);
-  
+  ListGraph::Node noeudActuel;
+
   fstream fimport("mongraphe.lgf", fstream::in);
   graphReader(g, fimport)
     .nodeMap("couleur", tab)
@@ -20,31 +21,43 @@ bool biparti()
   fimport.close();
   
   int groupe = 0;
-  for(ListGraph::EdgeIt e(g); e != INVALID; ++e)
+  for(ListGraph::NodeIt it(g); it!=INVALID;++it)
     {
+      pile.push(it);
+      break;
+    }
 
-      if(tab[g.u(e)]==2)
+  while(!pile.empty())
+    {
+      noeudActuel = pile.top();
+      pile.pop();
+      if(tab[noeudActuel]==2)
 	{
-	  groupe=0;
-	  tab[g.u(e)]=groupe;
+	  cout << "je colorie " << g.id(noeudActuel) << " en " << groupe << endl;
+	  tab[noeudActuel]=groupe;
 	  groupe=!groupe;
 	}
       else
-	groupe=!tab[g.u(e)];
-
-      if (tab[g.v(e)]==2)
+	groupe=!tab[noeudActuel];
+      for(ListGraph::IncEdgeIt it(g, noeudActuel); it != INVALID ; ++it)
 	{
-	  tab[g.v(e)]=groupe;
-	  groupe=!groupe;
-	}
-
-      if(tab[g.v(e)]==tab[g.u(e)] && tab[g.v(e)] != 2)
-	{
-	  cout << "le graph n'est pas biparti" << endl;
-	  return false;
+	  if(tab[g.target(it)]==2)
+	    {
+	      pile.push(g.target(it));
+	      tab[g.target(it)]=groupe;
+	    }
+	  if(tab[noeudActuel]==tab[g.target(it)])
+	    {
+	      cout << "le graph n'est pas biparti " << endl;
+	      return false;
+	    }
 	}
     }
+
+
   cout << "le graphe est biparti " << endl;
+  for(ListGraph::NodeIt it(g);it!=INVALID;++it)
+    cout << "id: " << g.id(it) << " couleur: " << tab[it] << endl;
   return true;
 }
 
