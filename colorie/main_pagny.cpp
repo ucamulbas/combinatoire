@@ -8,23 +8,28 @@ using namespace lemon;
 using namespace std;
 
 
+ListGraph g;
+ListGraph::NodeMap<int> degre(g);
+
+bool compar (ListGraph::Node a, ListGraph::Node b)
+{
+  if(degre[a] > degre [b])
+    return 1;
+  else
+    return 0;
+}
+
 int main(void)
 {
-  ListGraph g;
   ListGraph::Node noeudActuel;
   ListGraph::NodeMap<int> couleur(g);
-  ListGraph::NodeMap<int> degre(g);
   vector<ListGraph::Node> tab;
   int deg, i, size, couleurActuel = 1, adj;
-   fstream fimport("mongraphe.lgf", fstream::in);
+  fstream fimport("mongraphe.lgf", fstream::in);
   graphReader(g, fimport)
     .nodeMap("couleur", couleur)
     .run();
-    fimport.close();
-
-
-    test(g, couleur);
-
+  fimport.close();
     
   /*
     Pour chaque noeud, je compte son nombre de voisin et
@@ -38,26 +43,10 @@ int main(void)
 	deg++;
       degre[nit]=deg;
       cout << g.id(nit) << " : " << degre[nit] << endl;
-      if(!tab.size())
-	tab.push_back(nit);
-      else
-	{
-	  size = tab.size();
-	  for(i = 0 ; i < size ; i++)
-	    {
-	      if(degre[tab[i]] < degre[nit])
-		{
-		  tab.push_back(tab[size-1]);
-		  for(int j = size ; j > i ; j--)
-		    tab[j]=tab[j-1];
-		  tab[i]=nit;
-		  break;
-		}
-	    }
-	  if(i==tab.size())
-	    tab.push_back(nit);
-	}
+      tab.push_back(nit);
     }
+
+  sort(tab.begin(),tab.end(),compar);
   
   for(int i = 0 ; i < tab.size() ; i++)
     {
@@ -99,7 +88,7 @@ int main(void)
 		}
 	    }
 	  couleurActuel++;
-	 }
+	}
     }
 
   cout << "il faut " << couleurActuel-1 << " couleur pour ce graph " << endl;

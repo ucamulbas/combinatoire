@@ -8,6 +8,8 @@
 using namespace lemon;
 using namespace std;
 
+ListGraph g;
+ListGraph::EdgeMap<int> degre(g);
 
 void kruskal(ListGraph &g, ListGraph::NodeMap<int> &represent, ListGraph::EdgeMap<int> &degre, vector<ListGraph::Edge> tab)
 {
@@ -29,14 +31,20 @@ void kruskal(ListGraph &g, ListGraph::NodeMap<int> &represent, ListGraph::EdgeMa
     }
 }
 
+bool compar (ListGraph::Edge a, ListGraph::Edge b)
+{
+  if(degre[a] > degre [b])
+    return 1;
+  else
+    return 0;
+}
+
 int main(void)
 {
-  ListGraph g;
   ListGraph::NodeMap<int> represent(g);
-  ListGraph::EdgeMap<int> degre(g);
   vector<ListGraph::Edge> tab;
   int i, size;
-  fstream fimport("mongraphe.lgf", fstream::in);
+  fstream fimport("graph.lgf", fstream::in);
   graphReader(g, fimport)
     .nodeMap("represent", represent)
     .edgeMap("value", degre)
@@ -47,28 +55,12 @@ int main(void)
     Parcour et triage des edges
   */
   for(ListGraph::EdgeIt eit(g) ; eit != INVALID ; ++eit)
-    {
-      if(!tab.size())
 	tab.push_back(eit);
-      else
-	{
-	  size = tab.size();
-	  for(i = 0 ; i < size ; i++)
-	    {
-	      if(degre[tab[i]] < degre[eit])
-		{
-		  tab.push_back(tab[size-1]);
-		  for(int j = size ; j > i ; j--)
-		      tab[j]=tab[j-1];
-		  tab[i]=eit;
-		  break;
-		}
-	    }
-	  if(i==tab.size())
-	    tab.push_back(eit);
-      	}
-    }
- 
+
+  
+  sort(tab.begin(),tab.end(),compar);
+
+  
   kruskal(g,represent,degre,tab);
 
   cout << "les edges choisi sont:" << endl;
