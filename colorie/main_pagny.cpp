@@ -51,6 +51,7 @@ int main(void)
 		  for(int j = size ; j > i ; j--)
 		    tab[j]=tab[j-1];
 		  tab[i]=nit;
+		  break;
 		}
 	    }
 	  if(i==tab.size())
