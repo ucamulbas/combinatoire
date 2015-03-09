@@ -17,6 +17,7 @@ void kruskal(ListGraph &g, ListGraph::NodeMap<int> &represent, ListGraph::EdgeMa
 
   for(int i = tab.size() - 1 ; i >= 0 ; i--)
     {
+      cout << "je test l'edge " << g.id(tab[i]) << endl;
       if(represent[g.u(tab[i])] != represent[g.v(tab[i])])
 	{
 	  degre[tab[i]]=1;
@@ -37,7 +38,7 @@ int main(void)
   ListGraph::EdgeMap<int> degre(g);
   vector<ListGraph::Edge> tab;
   int i, size;
-  fstream fimport("mongraphe.lgf", fstream::in);
+  fstream fimport("graph.lgf", fstream::in);
   graphReader(g, fimport)
     .nodeMap("represent", represent)
     .edgeMap("value", degre)
@@ -62,6 +63,7 @@ int main(void)
 		  for(int j = size ; j > i ; j--)
 		      tab[j]=tab[j-1];
 		  tab[i]=eit;
+		  break;
 		}
 	    }
 	  if(i==tab.size())
@@ -69,7 +71,11 @@ int main(void)
       	}
     }
 
-
+  cout << "mon tableau" << endl;
+ for(int i = tab.size() - 1 ; i >= 0 ; i--)
+   cout << degre[tab[i]] << endl;
+ cout <<"fin du tableau"<<endl;
+ 
   kruskal(g,represent,degre,tab);
 
   cout << "les edges choisi sont:" << endl;
@@ -77,7 +83,7 @@ int main(void)
   for(ListGraph::EdgeIt eit(g) ; eit != INVALID ; ++eit)
     {
       if(degre[eit]==1)
-  	cout << g.id(eit) << endl;
+	cout << g.id(eit) << " : " << g.id(g.u(eit)) << " -> " << g.id(g.v(eit)) << endl;
     }
   
   return 0;

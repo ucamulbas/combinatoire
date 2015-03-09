@@ -7,6 +7,7 @@
 using namespace lemon;
 using namespace std;
 
+
 int main(void)
 {
   ListGraph g;
@@ -21,6 +22,10 @@ int main(void)
     .run();
     fimport.close();
 
+
+    test(g, couleur);
+
+    
   /*
     Pour chaque noeud, je compte son nombre de voisin et
     on range le noeud dans tab dans l'ordre decroissant en fonction
