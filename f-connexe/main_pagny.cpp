@@ -10,7 +10,6 @@ void f_connexe(ListDigraph &g, ListDigraph::Node noeudDepart, ListDigraph::NodeM
 {
   ListDigraph::NodeMap<int> plus(g);
   ListDigraph::NodeMap<int> moins(g);
-  int compteur = 0;
   plus[noeudDepart]=1;
   moins[noeudDepart]=1;
 
@@ -46,16 +45,11 @@ void f_connexe(ListDigraph &g, ListDigraph::Node noeudDepart, ListDigraph::NodeM
 	}
     }
 
- for(ListDigraph::NodeIt nit(g) ; nit != INVALID ; ++nit)
-    if(plus[nit]==1 && moins[nit]==1)
-      compteur++;
-
   for(ListDigraph::NodeIt nit(g) ; nit != INVALID ; ++nit)
     if(plus[nit]==1 && moins[nit]==1)
       {
 	cout << g.id(nit) << endl;
-	if(compteur>1)
-	  supp[nit]=1;
+	supp[nit]=1;
       }
   cout << "_______________________________________" << endl;
 }
