@@ -31,16 +31,14 @@ int main(void)
   digraphReader(g, fimport)
     .run();
   fimport.close();
- for(ListDigraph::NodeIt nit(g); nit!=INVALID;++nit)
-   {
-     degre[nit]=0;
-     tab.push_back(nit);
+  for(ListDigraph::NodeIt nit(g); nit!=INVALID;++nit)
+    {
+      degre[nit]=0;
+      for(ListDigraph::OutArcIt ait(g,nit) ; ait!=INVALID;++ait,degre[nit]++);
+      cout << g.id(nit) << " est de degre " << degre[nit] << endl;
+      tab.push_back(nit);
    }
  
-  for(ListDigraph::NodeIt nit(g); nit!=INVALID;++nit){
-    for(ListDigraph::OutArcIt ait(g,nit) ; ait!=INVALID;++ait,degre[nit]++);
-    cout << g.id(nit) << " est de degre " << degre[nit] << endl;
-  }
 
   sort(tab.begin(),tab.end(),comp(g,degre));
 
