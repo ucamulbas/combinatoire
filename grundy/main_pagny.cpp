@@ -46,7 +46,7 @@ int main(void)
 
   sort(tab.begin(),tab.end(),comp(g,degre,init));
 
-  
+  tab.erase(tab.begin()+1);
   cout <<"__________________________" << endl;
   for(int i = 0 ; i < tab.size() ; i++)
     cout << g.id(tab[i]) << " est de degre " << degre[tab[i]] << endl;
